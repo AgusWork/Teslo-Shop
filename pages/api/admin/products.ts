@@ -142,31 +142,31 @@ const createProduct = async(req: NextApiRequest, res: NextApiResponse<Data>) => 
 
 }
 
-const  deleteProduct = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
+const  deleteProduct = async(req: NextApiRequest, res: NextApiResponse) => {
 
-    return console.log(req.body)
-    // if ( !isValidObjectId( _id ) ) {
-    //     return res.status(400).json({ message: 'El id del producto no es válido' });
-    // }
+    if ( !isValidObjectId( req.body.id ) ) {
+        return res.status(400).json({ message: 'El id del producto no es válido' });
+    }
 
-    // try {
+    try {
         
-    //     await db.connect();
-    //     const product = await Product.findById(_id);
-    //     if ( !product ) {
-    //         await db.disconnect();
-    //         return res.status(400).json({ message: 'No existe un producto con ese ID' });
-    //     }
+        await db.connect()
+        const product = await Product.findById(req.body.id);
+        if ( !product ) {
+            await db.disconnect();
+            return res.status(400).json({ message: 'No existe un producto con ese ID' });
+        }
 
-    //     await product.delete( req.body );
-    //     await db.disconnect();
+        product?.delete( req.body.id );
+        await db.disconnect();
         
+        console.log("Aca esta la req.body" , req.body.id)
 
-    //     return res.status(200).json( product );
+        return res.status(200).json( product );
         
-    // } catch (error) {
-    //     console.log(error);
-    //     await db.disconnect();
-    //     return res.status(400).json({ message: 'Revisar la consola del servidor' });
-    // }
+    } catch (error) {
+        console.log(error);
+        await db.disconnect();
+        return res.status(400).json({ message: 'Revisar la consola del servidor' });
+    }
 }
