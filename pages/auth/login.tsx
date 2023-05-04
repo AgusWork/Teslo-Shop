@@ -1,24 +1,24 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { GetServerSideProps } from "next";
 import NextLink from "next/link";
-import { ClientSafeProvider, LiteralUnion, getProviders, getSession, signIn } from "next-auth/react";
 import {
-  Box,
-  Button,
-  // Chip,
-  Divider,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
+  ClientSafeProvider,
+  LiteralUnion,
+  getProviders,
+  getSession,
+  signIn,
+} from "next-auth/react";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "@/context";
-
 import { validations } from "@/utils";
-
 import { AuthLayout } from "../../components/layouts";
-import { ErrorOutline } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useEffectOnce } from "@/hooks/useEffectOnce";
 import { BuiltInProviderType } from "next-auth/providers";
@@ -40,9 +40,9 @@ const LoginPage = () => {
   const [showError, setShowError] = useState(false);
 
   const [providers, setProviders] = useState<Record<
-  LiteralUnion<BuiltInProviderType>,
-  ClientSafeProvider
-> | null>(null)
+    LiteralUnion<BuiltInProviderType>,
+    ClientSafeProvider
+  > | null>(null);
   useEffectOnce(() => {
     getProviders().then((prov) => {
       // console.log({prov});
@@ -169,10 +169,10 @@ const LoginPage = () => {
                     justifyContent="end"
                     flexDirection="column"
                   >
-                    <Divider sx={{ width: '100%', marginBottom: 2 }} />
+                    <Divider sx={{ width: "100%", marginBottom: 2 }} />
                     {Object.values(providers).map(({ id, name }) => {
-                      if (id === 'credentials') return null
-     
+                      if (id === "credentials") return null;
+
                       return (
                         <Button
                           key={id}
@@ -184,7 +184,7 @@ const LoginPage = () => {
                         >
                           {name}
                         </Button>
-                      )
+                      );
                     })}
                   </Grid>
                 )}
@@ -196,7 +196,6 @@ const LoginPage = () => {
     </AuthLayout>
   );
 };
-
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
