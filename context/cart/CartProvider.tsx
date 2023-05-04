@@ -4,7 +4,7 @@ import { CartContext, cartReducer } from "./";
 import Cookie from "js-cookie";
 import { useEffectOnce } from "@/hooks/useEffectOnce";
 import Cookies from "js-cookie";
-import { tesloApi } from "@/api";
+import { tesloApi } from "@/axiosApi";
 import axios from "axios";
 
 export interface CartState {

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 import {
-    Alert,
+  Alert,
   Box,
   Button,
   capitalize,
@@ -21,7 +21,6 @@ import {
   FormGroup,
   FormLabel,
   Grid,
-
   Radio,
   RadioGroup,
   TextField,
@@ -36,7 +35,7 @@ import {
 import { AdminLayout } from "../../../components/layouts";
 import { IProduct } from "../../../interfaces";
 import { dbProducts } from "../../../database";
-import { tesloApi } from "../../../api";
+import { tesloApi } from "../../../axiosApi";
 import { Product } from "../../../models";
 
 const validTypes = ["shirts", "pants", "hoodies", "hats"];
@@ -191,7 +190,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     } finally {
       setLoading(false);
       setOpen(false);
-      router.replace("/admin/products")
+      router.replace("/admin/products");
     }
   };
 
@@ -227,11 +226,13 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
           open={open}
           onClose={() => setOpen(!open)}
           aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"      
+          aria-describedby="alert-dialog-description"
         >
-            <Alert severity="error">Estas seguro que deseas eliminar este producto?</Alert>
-      
-          <DialogActions sx={{background:"rgb(253, 237, 237)"}}>
+          <Alert severity="error">
+            Estas seguro que deseas eliminar este producto?
+          </Alert>
+
+          <DialogActions sx={{ background: "rgb(253, 237, 237)" }}>
             <Button onClick={() => setOpen(!open)} autoFocus>
               Cancelar
             </Button>

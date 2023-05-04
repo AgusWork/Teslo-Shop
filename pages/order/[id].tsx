@@ -24,7 +24,7 @@ import { CartList, OrderSummary } from "../../components/cart";
 import { dbOrders } from "@/database";
 import { IOrder } from "@/interfaces";
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { tesloApi } from "@/api";
+import { tesloApi } from "@/axiosApi";
 import { useRouter } from "next/router";
 
 export type OrderResponseBody = {
@@ -159,7 +159,10 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                     <CircularProgress />
                   </Box>
                 )}
-                <Box sx={{ display: isPaying ? "none" : "flex", flex:1 }} flexDirection="column">
+                <Box
+                  sx={{ display: isPaying ? "none" : "flex", flex: 1 }}
+                  flexDirection="column"
+                >
                   {order.isPaid ? (
                     <Chip
                       sx={{ my: 2 }}
@@ -228,7 +231,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  if (order.user !== session.user._id ) {
+  if (order.user !== session.user._id) {
     return {
       redirect: {
         destination: "/order/history",

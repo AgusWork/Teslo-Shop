@@ -4,7 +4,7 @@ import useSWR, { SWRConfiguration } from "swr";
 //   fetch(...args).then((res) => res.json());
 
 export const useProducts = (url: string, config: SWRConfiguration = {}) => {
-  const { data, error } = useSWR<IProduct[]>(`/api/${url}`, config);
+  const { data, error } = useSWR<IProduct[]>(`/axiosApi/${url}`, config);
 
   return {
     products: data || [],

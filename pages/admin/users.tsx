@@ -12,7 +12,7 @@ import { Grid, Select, MenuItem, Box, CircularProgress } from "@mui/material";
 
 import { AdminLayout } from "../../components/layouts";
 import { IUser } from "../../interfaces";
-import { tesloApi } from "../../api";
+import { tesloApi } from "../../axiosApi";
 
 const UsersPage = () => {
   const { data, error } = useSWR<IUser[]>("/api/admin/users");

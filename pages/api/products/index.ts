@@ -39,12 +39,13 @@ const getProducts = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     const updatedProducts = products.map( product => {
         product.images = product.images.map( image => {
-            return image.includes('http') ? image : `products/${ image }`
+            return image.includes('http') ? image : `${ process.env.HOST_NAME}/products/${ image }`
         });
 
         return product;
     })
-
+//             return image.includes('http') ? image : `${ process.env.HOST_NAME}/products/${ image }`
+// Antes en todos los products/${image} se usaba antes ${ process.env.HOST_NAME}/ pero para desplegar vercel tuve que sacarlo
 
     return res.status(200).json( updatedProducts );
 

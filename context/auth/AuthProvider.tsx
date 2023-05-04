@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useReducer } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import axios from "axios";
 import { AuthContext, authReducer } from "./";
 import { IUser } from "@/interfaces";
-import { tesloApi } from "@/api";
+import { tesloApi } from "@/axiosApi";
 import Cookies from "js-cookie";
 import { useEffectOnce } from "@/hooks/useEffectOnce";
 
@@ -25,13 +25,13 @@ interface Props {
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE);
   const router = useRouter();
-  const {data, status} = useSession();
+  const { data, status } = useSession();
 
   useEffect(() => {
     if (status === "authenticated") {
-      dispatch({type:"[Auth] - Login", payload: data?.user as IUser})
+      dispatch({ type: "[Auth] - Login", payload: data?.user as IUser });
     }
-  },[status, data])
+  }, [status, data]);
 
   // useEffectOnce(() => {
   //   checkToken();
@@ -99,20 +99,20 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   };
 
   const logout = () => {
-    Cookies.remove('cart');
-    Cookies.remove('firstName');
-    Cookies.remove('lastName');
-    Cookies.remove('address');
-    Cookies.remove('address2');
-    Cookies.remove('zip');
-    Cookies.remove('city');
-    Cookies.remove('country');
-    Cookies.remove('phone');
-    
+    Cookies.remove("cart");
+    Cookies.remove("firstName");
+    Cookies.remove("lastName");
+    Cookies.remove("address");
+    Cookies.remove("address2");
+    Cookies.remove("zip");
+    Cookies.remove("city");
+    Cookies.remove("country");
+    Cookies.remove("phone");
+
     signOut();
     // router.reload();
     // Cookies.remove('token');
-}
+  };
 
   return (
     <AuthContext.Provider
@@ -120,7 +120,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         ...state,
         loginUser,
         registerUser,
-        logout
+        logout,
       }}
     >
       {children}
