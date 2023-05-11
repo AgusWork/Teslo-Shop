@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import NextLink from "next/link";
 import {
@@ -8,20 +8,13 @@ import {
   getSession,
   signIn,
 } from "next-auth/react";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "@/context";
 import { validations } from "@/utils";
 import { AuthLayout } from "../../components/layouts";
 import { useRouter } from "next/router";
-import { useEffectOnce } from "@/hooks/useEffectOnce";
 import { BuiltInProviderType } from "next-auth/providers";
+import { Box, Button, Divider, Grid, Link, TextField, Typography } from "@mui/material";
 
 type FormData = {
   email: string;
@@ -43,13 +36,12 @@ const LoginPage = () => {
     LiteralUnion<BuiltInProviderType>,
     ClientSafeProvider
   > | null>(null);
-  
-  useEffectOnce(() => {
+
+  useEffect(() => {
     getProviders().then((prov) => {
-      // console.log({prov});
       setProviders(prov);
     });
-  });
+  }, []);
 
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
