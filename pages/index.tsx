@@ -3,12 +3,8 @@ import { FullScreenLoading } from "@/components/ui";
 import { useProducts } from "@/hooks";
 import { Typography } from "@mui/material";
 import { Inter } from "@next/font/google";
-import dynamic from "next/dynamic";
+import ShopLayout  from "../components/layouts/ShopLayout";
 
-const ShopLayout = dynamic(
-  () => import("../../components/layouts/ShopLayout"),
-  { loading: () => <div>Loading...</div> }
-);
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
