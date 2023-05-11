@@ -43,6 +43,7 @@ const LoginPage = () => {
     LiteralUnion<BuiltInProviderType>,
     ClientSafeProvider
   > | null>(null);
+  
   useEffectOnce(() => {
     getProviders().then((prov) => {
       // console.log({prov});
