@@ -11,10 +11,8 @@ declare module "next-auth" {
 }; 
 export default NextAuth({
   // Configure one or more authentication providers
-  providers: [
-    
+  providers: [   
     // ...add more providers here
-
     Credentials({
       name: 'Custom Login',
       credentials: {
@@ -26,17 +24,12 @@ export default NextAuth({
         // return { name: 'Juan', correo: 'juan@google.com', role: 'admin' };
 
         return await dbUsers.checkUserEmailPassword( credentials!.email, credentials!.password );
-
       }
     }),
-
-
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
-
-
   ],
 
   // Custom Pages
@@ -55,18 +48,12 @@ export default NextAuth({
     strategy: 'jwt',
     updateAge: 86400, // cada día
   },
-
-
   callbacks: {
-
     async jwt({ token, account, user }) {
       // console.log({ token, account, user });
-
       if ( account ) {
-        token.accessToken = account.access_token;
-
+       token.accessToken = account.access_token;
         switch( account.type ) {
-
           case 'oauth': 
             token.user = await dbUsers.oAUthToDbUser( user?.email || '', user?.name || '' );
           break;
@@ -80,11 +67,8 @@ export default NextAuth({
 
       return token;
     },
-
-
     async session({ session, token, user }){
       // console.log({ session, token, user });
-
       session.accessToken = token.accessToken as any;
       session.user = token.user as any;
 

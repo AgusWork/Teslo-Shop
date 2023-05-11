@@ -53,31 +53,6 @@ const LoginPage = () => {
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
     await signIn("credentials", { email, password });
-
-    // Second TRY
-    // const isValidLogin = await loginUser(email, password);
-    // console.log(email, password);
-    // if (!isValidLogin) {
-    //   console.log("Error en las credenciales");
-    //   setShowError(true);
-    //   setTimeout(() => setShowError(false), 3000);
-    //   return;
-    // }
-    // const destination = router.query.p?.toString() || "/";
-    // router.replace(destination);
-
-    // First TRY
-    /* try {
-      setShowError(false);
-      const { data } = await tesloApi.post("/users/login", { email, password });
-      const { token, user } = data;
-
-      console.log(data);
-    } catch (error) {
-      console.log("Error en las credenciales");
-      setShowError(true);
-      setTimeout(() => setShowError(false), 3000);
-    }*/
   };
 
   return (

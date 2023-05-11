@@ -46,21 +46,6 @@ const RegisterPage = () => {
       setTimeout(() => setShowError(false), 3000);
       return;
     }
-
-    /*try {
-      const { data } = await tesloApi.post("/users/register", {
-        email,
-        password,
-        name,
-      });
-      const { token, user } = data;
-
-      console.log(data);
-    } catch (error) {
-      console.log("Error en las credenciales");
-      setShowError(true);
-      setTimeout(() => setShowError(false), 3000);
-    }*/
     const destination = router.query.p?.toString() || "/";
     router.replace(destination);
 
@@ -148,10 +133,6 @@ const RegisterPage = () => {
     </AuthLayout>
   );
 };
-
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
-
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
 
   const session = await getSession({req});
