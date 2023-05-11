@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { NextPage, GetStaticPaths, GetStaticProps } from "next";
-import { ShopLayout } from "@/components/layouts";
 import { ItemCounter, SizeSelector, SlideShow } from "@/components/ui";
 import { ICartProduct, IProduct, ISize } from "@/interfaces";
 import { Button, Chip, Grid, Typography } from "@mui/material";
@@ -8,6 +7,12 @@ import { Box } from "@mui/system";
 import { dbProducts } from "@/database";
 import { useRouter } from "next/router";
 import { CartContext } from "../../context/cart/CartContext";
+import dynamic from "next/dynamic";
+
+const ShopLayout = dynamic(
+  () => import("../../components/layouts/ShopLayout"),
+  { loading: () => <div>Loading...</div> }
+);
 
 interface Props {
   product: IProduct;

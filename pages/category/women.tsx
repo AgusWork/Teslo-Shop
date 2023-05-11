@@ -1,11 +1,15 @@
-import { ShopLayout } from "@/components/layouts";
 import { ProductList } from "@/components/products";
 import { FullScreenLoading } from "@/components/ui";
 import { useProducts } from "@/hooks";
 import { Typography } from "@mui/material";
 import { Inter } from "@next/font/google";
 import { NextPage } from "next";
+import dynamic from "next/dynamic";
 
+const ShopLayout = dynamic(
+  () => import("../../components/layouts/ShopLayout"),
+  { loading: () => <div>Loading...</div> }
+);
 const inter = Inter({ subsets: ["latin"] });
 
 const WomenPage: NextPage = () => {

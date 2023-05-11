@@ -9,11 +9,14 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-
-import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { CartList, OrderSummary } from "../../components/cart";
 import { CartContext } from "../../context/cart/CartContext";
+import dynamic from "next/dynamic";
 
+const ShopLayout = dynamic(
+  () => import("../../components/layouts/ShopLayout"),
+  { loading: () => <div>Loading...</div> }
+);
 const CartPage = () => {
   const { isLoaded, cart } = useContext(CartContext);
   const router = useRouter();

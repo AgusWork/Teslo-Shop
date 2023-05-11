@@ -1,13 +1,18 @@
 import NextLink from "next/link";
 import { GetServerSideProps, NextPage } from "next";
-
 import { Typography, Grid, Chip, Link } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-
-import { ShopLayout } from "../../components/layouts";
 import { getSession } from "next-auth/react";
 import { dbOrders } from "@/database";
 import { IOrder } from "@/interfaces";
+import dynamic from 'next/dynamic';
+
+
+
+  const ShopLayout = dynamic(
+    () => import('../../components/layouts/ShopLayout'),
+    { loading: () => <div>Loading...</div> }
+  );
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 100 },

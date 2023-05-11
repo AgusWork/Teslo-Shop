@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const ShopLayout: FC<Props> = ({
+const ShopLayout: FC<Props> = ({
   children,
   title,
   pageDescription,
@@ -43,3 +43,5 @@ export const ShopLayout: FC<Props> = ({
     </>
   );
 };
+
+export default ShopLayout;

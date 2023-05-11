@@ -13,13 +13,16 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
-
-import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { CartList, OrderSummary } from "../../components/cart";
 import { useEffectOnce } from "@/hooks/useEffectOnce";
 import Cookies from "js-cookie";
 import { useRouter } from 'next/router';
+import dynamic from "next/dynamic";
 
+const ShopLayout = dynamic(
+  () => import("../../components/layouts/ShopLayout"),
+  { loading: () => <div>Loading...</div> }
+);
 const SummaryPage = () => {
   const router = useRouter();
   const { shippingAddress, numberOfItems, createOrder } =

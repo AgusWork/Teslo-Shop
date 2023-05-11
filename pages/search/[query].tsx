@@ -1,12 +1,14 @@
 import type { NextPage, GetServerSideProps } from "next";
 import { Typography, Box } from "@mui/material";
-
-import { ShopLayout } from "../../components/layouts";
-
 import { ProductList } from "../../components/products";
-
 import { dbProducts } from "../../database";
 import { IProduct } from "../../interfaces";
+import dynamic from "next/dynamic";
+
+const ShopLayout = dynamic(
+  () => import("../../components/layouts/ShopLayout"),
+  { loading: () => <div>Loading...</div> }
+);
 
 interface Props {
   products: IProduct[];

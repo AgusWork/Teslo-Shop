@@ -18,14 +18,18 @@ import {
   CreditCardOffOutlined,
   CreditScoreOutlined,
 } from "@mui/icons-material";
-
-import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { CartList, OrderSummary } from "../../components/cart";
 import { dbOrders } from "@/database";
 import { IOrder } from "@/interfaces";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { tesloApi } from "@/axiosApi";
 import { useRouter } from "next/router";
+import dynamic from 'next/dynamic';
+
+const ShopLayout = dynamic(
+    () => import('../../components/layouts/ShopLayout'),
+    { loading: () => <div>Loading...</div> }
+  );
 
 export type OrderResponseBody = {
   id: string;

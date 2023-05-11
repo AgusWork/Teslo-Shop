@@ -3,11 +3,14 @@ import { useRouter } from 'next/router';
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import Cookies from 'js-cookie';
 import { useForm } from "react-hook-form";
-
-import { ShopLayout } from '../../components/layouts';
 import { countries } from "../../utils";
 import { CartContext } from '../../context';
+import dynamic from "next/dynamic";
 
+const ShopLayout = dynamic(
+  () => import("../../components/layouts/ShopLayout"),
+  { loading: () => <div>Loading...</div> }
+);
 
 type FormData = {
     firstName: string;

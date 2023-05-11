@@ -2,8 +2,12 @@ import NextLink from 'next/link';
 
 import { RemoveShoppingCartOutlined } from "@mui/icons-material"
 import { Box, Link, Typography } from "@mui/material"
-import { ShopLayout } from "../../components/layouts"
+import dynamic from "next/dynamic";
 
+const ShopLayout = dynamic(
+  () => import("../../components/layouts/ShopLayout"),
+  { loading: () => <div>Loading...</div> }
+);
 
 const EmptyPage = () => {
   return (
