@@ -11,15 +11,20 @@ import {
 import { useForm } from "react-hook-form";
 import { AuthContext } from "@/context";
 import { validations } from "@/utils";
-import { AuthLayout } from "../../components/layouts";
 import { useRouter } from "next/router";
 import { BuiltInProviderType } from "next-auth/providers";
 import { Box, Button, Divider, Grid, Link, TextField, Typography } from "@mui/material";
+import dynamic from 'next/dynamic';
 
 type FormData = {
   email: string;
   password: string;
 };
+
+  const AuthLayout = dynamic(
+    () => import('../../components/layouts/AuthLayout'),
+    { loading: () => <div>Loading...</div> }
+  );
 
 const LoginPage = () => {
   const router = useRouter();
@@ -31,7 +36,7 @@ const LoginPage = () => {
   } = useForm<FormData>();
 
   const [showError, setShowError] = useState(false);
-
+  
   const [providers, setProviders] = useState<Record<
     LiteralUnion<BuiltInProviderType>,
     ClientSafeProvider

@@ -7,7 +7,7 @@ interface Props {
     children : React.ReactNode;
 }
 
-export const AuthLayout: FC<Props> = ({ children, title  }) => {
+const AuthLayout: FC<Props> = ({ children, title  }) => {
   return (
     <>
         <Head>
@@ -23,3 +23,4 @@ export const AuthLayout: FC<Props> = ({ children, title  }) => {
     </>
   )
 }
+export default AuthLayout;
