@@ -11,13 +11,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { AuthLayout } from "../../components/layouts";
 import { useForm } from "react-hook-form";
 import { ErrorOutline } from "@mui/icons-material";
 import { validations } from "@/utils";
 import { AuthContext } from "@/context";
 import { getSession } from "next-auth/react";
+import dynamic from 'next/dynamic';
 
+  const AuthLayout = dynamic(
+    () => import('../../components/layouts/AuthLayout'),
+    { loading: () => <div>Loading...</div> }
+  );
 type FormData = {
   name: string;
   email: string;

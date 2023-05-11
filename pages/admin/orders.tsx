@@ -1,11 +1,10 @@
 import React from 'react'
 import useSWR from 'swr';
-import { AdminLayout, AuthLayout } from '@/components/layouts'
+import { AdminLayout } from '@/components/layouts'
 import { IOrder, IUser } from '@/interfaces';
 import { ConfirmationNumberOutlined } from '@mui/icons-material'
 import { Box, Chip, CircularProgress, Grid } from '@mui/material'
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-
 
 const columns :GridColDef[] = [
     { field: 'id', headerName: 'Orden ID', width: 250 },
