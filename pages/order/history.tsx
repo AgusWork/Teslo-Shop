@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import NextLink from "next/link";
 import { GetServerSideProps, NextPage } from "next";
 import { Typography, Grid, Chip, Link } from "@mui/material";
@@ -5,14 +6,21 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { getSession } from "next-auth/react";
 import { dbOrders } from "@/database";
 import { IOrder } from "@/interfaces";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-
-
-  const ShopLayout = dynamic(
-    () => import('../../components/layouts/ShopLayout'),
-    { loading: () => <div>Loading...</div> }
-  );
+const ShopLayout = dynamic(
+  () => import("../../components/layouts/ShopLayout"),
+  { loading: () => <div>Loading...</div> }
+);
+interface DataGridProps {
+  rows: {
+    id: number;
+    paid: boolean;
+    fullname: string;
+    orderId: string | undefined;
+    totalOrder: string;
+  }[];
+}
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 100 },
@@ -48,23 +56,33 @@ const columns: GridColDef[] = [
     field: "totalOrder",
     headerName: "Total de la Orden",
     width: 200,
-
   },
-
 ];
 
 interface Props {
   orders: IOrder[];
 }
 const HistoryPage: NextPage<Props> = ({ orders }) => {
-  const rows = orders.map((order, idx) => ({
-      id: idx + 1,
-      paid: order.isPaid,
-      fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
-      orderId: order._id,
-      totalOrder: `$ ${Math.round(order.total * 100) / 100}`,
-    }))
-  ;
+  const rows = useMemo(
+    () =>
+      orders.map((order, idx) => ({
+        id: idx + 1,
+        paid: order.isPaid,
+        fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
+        orderId: order._id,
+        totalOrder: `$ ${Math.round(order.total * 100) / 100}`,
+      })),
+    [orders]
+  );
+
+  const MemoizedDataGrid = React.memo(({ rows }: DataGridProps) => (
+    <DataGrid
+      rows={rows}
+      columns={columns}
+      pageSize={10}
+      rowsPerPageOptions={[10]}
+    />
+  ));
   return (
     <ShopLayout
       title={"Historial de ordenes"}
@@ -76,12 +94,7 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
 
       <Grid container className="fadeIn">
         <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            rowsPerPageOptions={[10]}
-          />
+          <MemoizedDataGrid rows={rows} />
         </Grid>
       </Grid>
     </ShopLayout>
@@ -107,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   return {
     props: {
-      orders
+      orders,
     },
   };
 };
