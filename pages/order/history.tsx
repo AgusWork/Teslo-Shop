@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { GetServerSideProps, NextPage } from "next";
-import { Typography, Grid, Chip, Link } from "@mui/material";
+import { Typography, Grid, Chip, Link, CircularProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { getSession } from "next-auth/react";
 import { dbOrders } from "@/database";
@@ -10,7 +10,7 @@ import columns from "@/components/columns/orderHistoryColumns";
 
 const ShopLayout = dynamic(
   () => import("../../components/layouts/ShopLayout"),
-  { loading: () => <div>Loading...</div> }
+  { loading: () => <CircularProgress /> }
 );
 
 interface DataGridProps {
@@ -51,20 +51,22 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
     [orders]
   );
   return (
-    <ShopLayout
-      title={"Historial de ordenes"}
-      pageDescription={"Historial de ordenes del cliente"}
-    >
-      <Typography variant="h1" component="h1">
-        Historial de ordenes
-      </Typography>
+    <React.Suspense fallback={<CircularProgress />}>
+      <ShopLayout
+        title={"Historial de ordenes"}
+        pageDescription={"Historial de ordenes del cliente"}
+      >
+        <Typography variant="h1" component="h1">
+          Historial de ordenes
+        </Typography>
 
-      <Grid container className="fadeIn">
-        <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
-          <MemoizedDataGrid rows={rows} />
+        <Grid container className="fadeIn">
+          <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
+            <MemoizedDataGrid rows={rows} />
+          </Grid>
         </Grid>
-      </Grid>
-    </ShopLayout>
+      </ShopLayout>
+    </React.Suspense>
   );
 };
 
@@ -88,4 +90,5 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     },
   };
 };
+
 export default HistoryPage;
