@@ -71,16 +71,16 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session: any = await getSession({ req });
+  // const session: any = await getSession({ req });
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: `/auth/login?p=/order/history`,
-        permanent: false,
-      },
-    };
-  }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: `/auth/login?p=/order/history`,
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   const orders: IOrder[] = [];
 
