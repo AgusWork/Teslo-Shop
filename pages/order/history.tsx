@@ -1,31 +1,57 @@
-import { NextPage } from "next";
-import { Typography, Grid} from "@mui/material";
+import React, { useMemo } from "react";
+import { GetServerSideProps, NextPage } from "next";
+import { Typography, Grid, Chip, Link } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { getSession } from "next-auth/react";
 import { dbOrders } from "@/database";
 import { IOrder } from "@/interfaces";
-import dynamic from 'next/dynamic';
-
-import  columns  from '../../components/columns/orderHistoryColumns';
+import dynamic from "next/dynamic";
+import columns from "@/components/columns/orderHistoryColumns";
 
 const ShopLayout = dynamic(
-  () => import('../../components/layouts/ShopLayout'),
+  () => import("../../components/layouts/ShopLayout"),
   { loading: () => <div>Loading...</div> }
 );
+
+interface DataGridProps {
+  rows: {
+    id: number;
+    paid: boolean;
+    fullname: string;
+    orderId: string | undefined;
+    totalOrder: string;
+  }[];
+}
+
+
 
 interface Props {
   orders: IOrder[];
 }
 
+const MemoizedDataGrid = React.memo(function MyMemoizedDataGrid({ rows }: DataGridProps) {
+  return (
+    <DataGrid
+      rows={rows}
+      columns={columns}
+      pageSize={10}
+      rowsPerPageOptions={[10]}
+    />
+  );
+});
+
 const HistoryPage: NextPage<Props> = ({ orders }) => {
-  const rows = orders.map((order, idx) => ({
-      id: idx + 1,
-      paid: order.isPaid,
-      fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
-      orderId: order._id,
-      totalOrder: `$ ${Math.round(order.total * 100) / 100}`,
-    }))
-  ;
+  const rows = useMemo(
+    () =>
+      orders.map((order, idx) => ({
+        id: idx + 1,
+        paid: order.isPaid,
+        fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
+        orderId: order._id,
+        totalOrder: `$${order.total.toFixed(2)}`,
+      })),
+    [orders]
+  );
   return (
     <ShopLayout
       title={"Historial de ordenes"}
@@ -37,24 +63,14 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
 
       <Grid container className="fadeIn">
         <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            rowsPerPageOptions={[10]}
-          />
+          <MemoizedDataGrid rows={rows} />
         </Grid>
       </Grid>
     </ShopLayout>
   );
 };
 
-// You should use getStaticProps when:
-// - The data required to render the page is available at build time
-// - The data is unlikely to change frequently
-// - The page must be pre-rendered (for example, for SEO purposes)
-
-export const getStaticProps = async ({ req }: any) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session: any = await getSession({ req });
 
   if (!session) {
@@ -70,9 +86,8 @@ export const getStaticProps = async ({ req }: any) => {
 
   return {
     props: {
-      orders
+      orders,
     },
   };
 };
-
 export default HistoryPage;
