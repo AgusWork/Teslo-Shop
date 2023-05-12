@@ -12,6 +12,7 @@ const ShopLayout = dynamic(
   () => import("../../components/layouts/ShopLayout"),
   { loading: () => <div>Loading...</div> }
 );
+
 interface DataGridProps {
   rows: {
     id: number;
@@ -62,6 +63,18 @@ const columns: GridColDef[] = [
 interface Props {
   orders: IOrder[];
 }
+
+const MemoizedDataGrid = React.memo(function MyMemoizedDataGrid({ rows }: DataGridProps) {
+  return (
+    <DataGrid
+      rows={rows}
+      columns={columns}
+      pageSize={10}
+      rowsPerPageOptions={[10]}
+    />
+  );
+});
+
 const HistoryPage: NextPage<Props> = ({ orders }) => {
   const rows = useMemo(
     () =>
@@ -70,21 +83,10 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
         paid: order.isPaid,
         fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
         orderId: order._id,
-        totalOrder: `$ ${Math.round(order.total * 100) / 100}`,
+        totalOrder: `$${order.total.toFixed(2)}`,
       })),
     [orders]
   );
-
-  const MemoizedDataGrid = React.memo(function MyMemoizedDataGrid({ rows }: DataGridProps) {
-    return (
-        <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            rowsPerPageOptions={[10]}
-        />
-    );
-});
   return (
     <ShopLayout
       title={"Historial de ordenes"}
