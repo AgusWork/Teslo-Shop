@@ -75,14 +75,16 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
     [orders]
   );
 
-  const MemoizedDataGrid = React.memo(({ rows }: DataGridProps) => (
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      pageSize={10}
-      rowsPerPageOptions={[10]}
-    />
-  ));
+  const MemoizedDataGrid = React.memo(function MyMemoizedDataGrid({ rows }: DataGridProps) {
+    return (
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
+        />
+    );
+});
   return (
     <ShopLayout
       title={"Historial de ordenes"}
