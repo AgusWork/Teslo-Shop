@@ -23,9 +23,7 @@ interface DataGridProps {
   }[];
 }
 
-interface Props {
-  orders: IOrder[];
-}
+
 
 const MemoizedDataGrid = React.memo(function MyMemoizedDataGrid({ rows }: DataGridProps) {
   return (
@@ -38,18 +36,23 @@ const MemoizedDataGrid = React.memo(function MyMemoizedDataGrid({ rows }: DataGr
   );
 });
 
-const HistoryPage: NextPage<Props> = ({ orders }) => {
-  const rows = useMemo(
-    () =>
-      orders.map((order, idx) => ({
-        id: idx + 1,
-        paid: order.isPaid,
-        fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
-        orderId: order._id,
-        totalOrder: `$${order.total.toFixed(2)}`,
-      })),
-    [orders]
-  );
+const HistoryPage: NextPage = ({ session }: any) => {
+
+
+  if (session) {
+    console.log("Sesion es: " , session)
+  }
+  // const rows = useMemo(
+  //   () =>
+  //     orders.map((order, idx) => ({
+  //       id: idx + 1,
+  //       paid: order.isPaid,
+  //       fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
+  //       orderId: order._id,
+  //       totalOrder: `$${order.total.toFixed(2)}`,
+  //     })),
+  //   [orders]
+  // );
   return (
     <React.Suspense fallback={<CircularProgress />}>
       <ShopLayout
@@ -60,11 +63,11 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
           Historial de ordenes
         </Typography>
 
-        <Grid container className="fadeIn">
+        {/* <Grid container className="fadeIn">
           <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
             <MemoizedDataGrid rows={rows} />
           </Grid>
-        </Grid>
+        </Grid> */}
       </ShopLayout>
     </React.Suspense>
   );
@@ -82,11 +85,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  const orders = await dbOrders.getOrdersByUser(session.user._id);
 
   return {
     props: {
-      orders,
+      session,
     },
   };
 };
