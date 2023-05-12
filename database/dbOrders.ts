@@ -18,7 +18,8 @@ export const getOrderById = async (id: string): Promise<IOrder | null> => {
 
   await connectDB();
 
-  const order = await Order.findById(id).lean();
+  const orderPromise = Order.findById(id).lean();
+  const [order] = await Promise.all([orderPromise]);
 
   if (!order) {
     return null;
@@ -34,7 +35,8 @@ export const getOrdersByUser = async (userId: string): Promise<IOrder[]> => {
 
   await connectDB();
 
-  const orders = await Order.find({ user: userId }).lean();
+  const ordersPromise = Order.find({ user: userId }).lean();
+  const [orders] = await Promise.all([ordersPromise]);
 
   return orders;
 };
