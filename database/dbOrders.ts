@@ -3,35 +3,38 @@ import { IOrder } from '../interfaces/order';
 import { Order } from '@/models';
 import { db } from '.';
 
+const connectDB = async () => {
+  if (db.isConnected()) {
+    return;
+  }
 
-export const getOrderById= async(id : string):Promise<IOrder | null> =>{
+  await db.connect();
+};
 
-    if(!isValidObjectId(id)) {
-        return null;
-    }
-    await db.connect();
+export const getOrderById = async (id: string): Promise<IOrder | null> => {
+  if (!isValidObjectId(id)) {
+    return null;
+  }
 
-    const order = await Order.findById(id).lean();
-    await db.disconnect();
+  await connectDB();
 
-    if(!order){
-        return null;
-    }
-    return JSON.parse(JSON.stringify(order))
-}
+  const order = await Order.findById(id).lean();
 
-export const getOrdersByUser = async( userId: string ): Promise<IOrder[]> => {
-    
-    if ( !isValidObjectId(userId) ){
-        return [];
-    }
+  if (!order) {
+    return null;
+  }
 
-    await db.connect();
-    const orders = await Order.find({ user: userId }).lean();
-    await db.disconnect();
+  return order;
+};
 
+export const getOrdersByUser = async (userId: string): Promise<IOrder[]> => {
+  if (!isValidObjectId(userId)) {
+    return [];
+  }
 
-    return JSON.parse(JSON.stringify(orders));
+  await connectDB();
 
+  const orders = await Order.find({ user: userId }).lean();
 
-}
+  return orders;
+};
