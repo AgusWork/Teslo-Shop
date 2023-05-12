@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
-import NextLink from "next/link";
 import { GetServerSideProps, NextPage } from "next";
 import { Typography, Grid, Chip, Link } from "@mui/material";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { getSession } from "next-auth/react";
 import { dbOrders } from "@/database";
 import { IOrder } from "@/interfaces";
 import dynamic from "next/dynamic";
+import columns from "@/components/columns/orderHistoryColumns";
 
 const ShopLayout = dynamic(
   () => import("../../components/layouts/ShopLayout"),
@@ -23,42 +23,7 @@ interface DataGridProps {
   }[];
 }
 
-const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 100 },
-  { field: "fullname", headerName: "Nombre Completo", width: 300 },
 
-  {
-    field: "paid",
-    headerName: "Pagada",
-    description: "Muestra información si está pagada la orden o no",
-    width: 200,
-    renderCell: (params: GridRenderCellParams) => {
-      return params.row.paid ? (
-        <Chip color="success" label="Pagada" variant="outlined" />
-      ) : (
-        <Chip color="error" label="No pagada" variant="outlined" />
-      );
-    },
-  },
-  {
-    field: "orden",
-    headerName: "Ver orden",
-    width: 100,
-    sortable: false,
-    renderCell: (params: GridRenderCellParams) => {
-      return (
-        <NextLink href={`/order/${params.row.orderId}`} passHref legacyBehavior>
-          <Link underline="always">Ver orden</Link>
-        </NextLink>
-      );
-    },
-  },
-  {
-    field: "totalOrder",
-    headerName: "Total de la Orden",
-    width: 200,
-  },
-];
 
 interface Props {
   orders: IOrder[];
@@ -104,9 +69,6 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
     </ShopLayout>
   );
 };
-
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session: any = await getSession({ req });
