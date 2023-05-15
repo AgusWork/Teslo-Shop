@@ -23,13 +23,6 @@ export default function orderCreate(req: NextApiRequest, res: NextApiResponse<Da
 const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { orderItems, total } = req.body as IOrder;
 
-  console.log( "OrderItems y total",orderItems, total)
-  if (orderItems && total) {
-    return res
-      .status(401)
-      .json({ message: `"OrderItems y total",${orderItems}, ${total}` });
-  
-  }
   // Varificar que este puesto un usuario
   const session: any = await getSession({ req });
 
