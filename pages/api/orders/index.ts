@@ -32,17 +32,18 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       .json({ message: "Debe estar autenticado para hacer esto" });
   }
 
-  if (session) {
-    return res
-      .status(401)
-      .json({ message: "Esta autenticado" });
-  }
+ 
 
   const productsIds = orderItems.map((product) => product._id);
   await db.connect();
 
   const dbProducts = await Product.find({ _id: { $in: productsIds } });
-
+  
+  if (!dbProducts) {
+    return res
+    .status(401)
+    .json({ message: "DBproducts no devuelve nada" });
+  }
   try {
     const subTotal = orderItems.reduce((prev, current) => {
       const currentPrice = dbProducts.find(
