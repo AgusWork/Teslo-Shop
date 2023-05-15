@@ -24,6 +24,11 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { orderItems, total } = req.body as IOrder;
 
   console.log( "OrderItems y total",orderItems, total)
+  if (orderItems && total) {
+    return res
+      .status(401)
+      .json({ message: "OrderItems y total",orderItems, total});
+  }
   // Varificar que este puesto un usuario
   const session: any = await getSession({ req });
 
@@ -31,6 +36,12 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     return res
       .status(401)
       .json({ message: "Debe estar autenticado para hacer esto" });
+  }
+
+  if (session) {
+    return res
+      .status(401)
+      .json({ message: "Esta autenticado" });
   }
 
   const productsIds = orderItems.map((product) => product._id);
