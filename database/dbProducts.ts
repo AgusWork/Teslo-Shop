@@ -16,7 +16,7 @@ export const getProductBySlug = async( slug: string ): Promise<IProduct | null> 
 // Todo: ver si la imagen tiene http y si es asi retornar la imagen con el lugar nuevo
 // Lo ideal seria subir todas las imagenes al cloudinary para no tener que utilizar esta logica
     product.images = product.images.map( image => {
-        return image.includes('http') ? image : `products/${ image }`
+        return image.includes('http') ? image : `/products/${ image }`
     });
 
     return JSON.parse( JSON.stringify( product ) );
@@ -51,7 +51,7 @@ export const getProductsByTerm = async ( term:string): Promise<IProduct[]> => {
     
     const updatedProducts = products.map( product => {
         product.images = product.images.map( image => {
-            return image.includes('http') ? image : `products/${ image }`
+            return image.includes('http') ? image : `/products/${ image }`
         });
 
         return product;
@@ -70,7 +70,7 @@ export const getAllProducts = async(): Promise<IProduct[]> => {
 
     const updatedProducts = products.map( product => {
         product.images = product.images.map( image => {
-            return image.includes('http') ? image : `products/${ image }`
+            return image.includes('http') ? image : `/products/${ image }`
         });
         return product;
     });
