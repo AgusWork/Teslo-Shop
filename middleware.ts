@@ -46,7 +46,7 @@ export async function middleware(req: NextRequest) {
 };
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/checkout/:path*','/orders/:path*','/api/orders/:path*','/((?!api\/)/admin/:path.*)', 
+  matcher: ['/checkout/:path*','/orders/:path*','/((?!api\/)/admin/:path.*)', 
   //  '/((?!api/admin/upload)api/admin/:path*)'
   ],
 };
